@@ -1,4 +1,4 @@
-package com.prospring.aop.advice;
+package com.prospring.aop.pointcut;
 
 import com.prospring.aop.common.GrammySinger;
 import com.prospring.aop.pointcut.SimpleStaticPointcut;
