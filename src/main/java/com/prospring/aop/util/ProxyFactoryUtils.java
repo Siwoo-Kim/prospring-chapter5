@@ -1,6 +1,7 @@
 package com.prospring.aop.util;
 
 import org.aopalliance.aop.Advice;
+import org.springframework.aop.Advisor;
 import org.springframework.aop.framework.ProxyFactory;
 
 /**
@@ -18,6 +19,13 @@ public class ProxyFactoryUtils {
         ProxyFactory proxyFactory = new ProxyFactory();
         proxyFactory.setTarget(target);
         proxyFactory.addAdvice(advice);
+        return (T) proxyFactory.getProxy();
+    }
+
+    public static <T,S extends Advisor> T getProxy(T target, S advisor) {
+        ProxyFactory proxyFactory = new ProxyFactory();
+        proxyFactory.setTarget(target);
+        proxyFactory.addAdvisor(advisor);
         return (T) proxyFactory.getProxy();
     }
 }

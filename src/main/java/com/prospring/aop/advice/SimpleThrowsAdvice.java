@@ -3,6 +3,7 @@ package com.prospring.aop.advice;
 import com.prospring.aop.common.ErrorBean;
 import com.prospring.aop.util.ProxyFactoryUtils;
 import org.junit.Test;
+import org.springframework.aop.Pointcut;
 import org.springframework.aop.ThrowsAdvice;
 
 /**
