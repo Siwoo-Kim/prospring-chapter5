@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+    <bean id="auditAdvice" class="com.prospring.aop.advice.AuditAdvice" />
+    <bean id="complexAuditAdvice" class="com.prospring.aop.advice.ComplexAuditAdvice" />
+
+    <bean id="siwoo" class="com.prospring.aop.common.GrammyGuitarist" />
+    <bean id="documentarist" class="com.prospring.aop.common.Documentarist"
+        p:guitarist-ref="siwoo"/>
+    <bean id="newDocumentarist" class="com.prospring.aop.common.NewDocumentarist"
+          p:guitarist-ref="siwoo"/>
+
+    <aop:config proxy-target-class="true">
+       <aop:pointcut id="singPointcut"
+                     expression="execution(* com..*sing(com.prospring.aop.common.GrammySinger.Guitar))" />
+        <aop:aspect ref="auditAdvice">
+            <aop:before method="before" pointcut-ref="singPointcut" />
+        </aop:aspect>
+    </aop:config>
+
+    <aop:config proxy-target-class="true">
+        <aop:pointcut id="singPointcutWithArgs"
+                      expression="execution(* com..*sing(com.prospring.aop.common.GrammySinger.Guitar)) and args(value) and bean(siwoo*)" />
+        <aop:aspect ref="complexAuditAdvice" >
+            <aop:before method="before" pointcut-ref="singPointcutWithArgs" />
+        </aop:aspect>
+    </aop:config>
+
+    <bean id="simpleAroundAdvice" class="com.prospring.aop.advice.SimpleAroundAdvice" />
+
+    <aop:config proxy-target-class="true">
+        <aop:pointcut id="singPointcut2" expression="execution(* com..*sing(com.prospring.aop.common.GrammySinger.Guitar)) and args(value) and bean(siwoo)" />
+        <aop:aspect ref="simpleAroundAdvice" >
+            <aop:around method="around" pointcut-ref="singPointcut2" />
+        </aop:aspect>
+    </aop:config>
+
+
+    <bean id="myTesterTarget" class="com.prospring.aop.common.MyTesterTarget" />
+    <bean class="com.prospring.aop.common.MyDependentBean"
+          p:target-ref="myTesterTarget" />
+    <bean id="myBeforeAdvice" class="com.prospring.aop.advice.MyBeforeAdvice" />
+
+    <aop:config>
+        <aop:pointcut id="getSomeStringPointcut"
+                      expression="execution(* com.prospring.aop.common..*getSomeString(..))"/>
+        <aop:aspect ref="myBeforeAdvice"  >
+            <aop:before method="before" pointcut-ref="getSomeStringPointcut" />
+        </aop:aspect>
+    </aop:config>
+
+</beans>

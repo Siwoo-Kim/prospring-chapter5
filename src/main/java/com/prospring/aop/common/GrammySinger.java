@@ -11,7 +11,6 @@ package com.prospring.aop.common;
 
 public class GrammySinger implements Singer{
 
-
     @Override
     public void sing() {
         System.out.println("sing: Gravity is working against me");
@@ -30,8 +29,18 @@ public class GrammySinger implements Singer{
     }
 
     public static class Guitar {
+        private String brand = " Martin";
+
         public String play() {
             return "G C G C Am D7";
+        }
+
+        public String getBrand() {
+            return brand;
+        }
+
+        public void setBrand(String brand) {
+            this.brand = brand;
         }
     }
 }
